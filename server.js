@@ -17,6 +17,12 @@ app.get('/article-two',function(req,res){
 res.send('Article 2 will be served shortly');
 });
 
+var counter=0; // starts from zero everytime the server is restarted
+app.get('/counter',function(req,res){
+counter=counter+1;
+res.send(counter.toString());
+})
+
 app.get('/ui/style.css', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'style.css'));
 });
@@ -28,6 +34,14 @@ app.get('/ui/madi.png', function (req, res) {
 app.get('/ui/main.js', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'main.js'));
 });
+
+var names = [];
+app.get('/submit-name', function(req, res) { // URL example: /submit-name/?name=xxxx
+	// Get the name from the request
+	var name = req.query.name;
+	names.push(name); // push the name to the array names
+	res.send(JSON.stringify(names)); // names is a Javascript object, hence need JSON to convert it into string
+})
 
 var port = 8080; // Use 8080 for local development because you might already have apache running on 80
 app.listen(8080, function () {
